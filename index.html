@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="TOU Saver shows Ontario time-of-use electricity windows and a simple bill estimate so you can shift laundry and charging off peak." />
+  <title>TOU Saver · Shift power off peak</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="banner">
+    <div class="banner-inner">
+      <h1>TOU Saver</h1>
+      <p>See Ontario’s time-of-use windows in Toronto time, then estimate how much you save by moving laundry, dishes, or an EV charge off peak.</p>
+      <span class="pill">Built for Green Shift Hacks</span>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section class="card" aria-labelledby="now-title">
+      <h2 id="now-title">Right now</h2>
+      <div class="now">
+        <span id="now-badge" class="badge off" aria-live="polite">Loading…</span>
+        <p id="now-meta" class="meta"></p>
+      </div>
+      <fieldset style="border:0;padding:0;margin:0.85rem 0 0;">
+        <legend class="sr-only">Price plan</legend>
+        <label style="display:inline-flex;align-items:center;gap:0.35rem;margin-right:1rem;font-weight:600;color:var(--penn-blue);">
+          <input type="radio" name="plan" value="tou" checked /> Time-of-Use (TOU)
+        </label>
+        <label style="display:inline-flex;align-items:center;gap:0.35rem;font-weight:600;color:var(--penn-blue);">
+          <input type="radio" name="plan" value="ulo" /> Ultra-Low Overnight (ULO)
+        </label>
+      </fieldset>
+      <div id="timeline" class="timeline" role="img"></div>
+      <div class="legend" aria-hidden="true">
+        <span><i class="swatch off"></i>Off-peak / weekend</span>
+        <span><i class="swatch mid"></i>Mid-peak</span>
+        <span><i class="swatch on"></i>On-peak</span>
+        <span><i class="swatch ultra"></i>Ultra-low</span>
+      </div>
+      <div id="schedule-copy" class="meta"></div>
+    </section>
+
+    <div class="grid two" style="margin-top:1rem;">
+      <section class="card" aria-labelledby="estimate-title">
+        <h2 id="estimate-title">Shift one chore</h2>
+        <p class="meta">Pick a flexible load, how often you run it, and compare two price periods.</p>
+        <div class="row two">
+          <div>
+            <label for="appliance">Appliance</label>
+            <select id="appliance"></select>
+          </div>
+          <div>
+            <label for="times">Times per week</label>
+            <input id="times" type="number" min="1" max="21" step="1" value="3" />
+          </div>
+        </div>
+        <div class="row two">
+          <div>
+            <label for="from-period">Run it during</label>
+            <select id="from-period"></select>
+          </div>
+          <div>
+            <label for="to-period">Shift it to</label>
+            <select id="to-period"></select>
+          </div>
+        </div>
+        <div id="estimate" class="result" aria-live="polite"></div>
+      </section>
+
+      <section class="card" aria-labelledby="impact-title">
+        <h2 id="impact-title">Why this helps the grid</h2>
+        <div id="impact"></div>
+        <h3>OEB holidays in 2026</h3>
+        <p class="meta">On these days, TOU charges the off-peak price all day. Source: OEB holiday schedule.</p>
+        <ul id="holidays"></ul>
+        <div class="alert" role="note">
+          This tool uses commodity energy prices only (¢/kWh). Your bill also has delivery, regulatory charges and tax. Check your utility for the plan you are on.
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:1rem;" aria-labelledby="sources-title">
+      <h2 id="sources-title">Data sources</h2>
+      <ul>
+        <li><a href="https://www.oeb.ca/consumer-information-and-protection/electricity-rates" rel="noopener noreferrer">Ontario Energy Board electricity rates</a> (TOU, ULO and Tiered prices)</li>
+        <li><a href="https://www.oeb.ca/consumer-information-and-protection/electricity-rates/holiday-schedule-time-use-and-ultra-low" rel="noopener noreferrer">OEB holiday schedule for TOU and ULO</a></li>
+      </ul>
+      <p id="source-note" class="meta"></p>
+      <p class="meta">Appliance kWh figures are typical planning values, labelled as estimates in the calculator. They are not meter readings.</p>
+    </section>
+
+    <p class="footnote">TOU Saver · MIT License · Built by John Khan for Green Shift Hacks · No tracking · Times use the <code>America/Toronto</code> zone</p>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
