@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="TOU Saver shows Ontario time-of-use electricity windows and a simple bill estimate so you can shift laundry and charging off peak." />
-  <title>TOU Saver · Shift power off peak</title>
+  <meta name="description" content="TOU Saver shows Ontario time of use electricity periods in Toronto time and how much you save, and how much load you take off the peak, by moving laundry, dishes or an EV charge." />
+  <title>TOU Saver · Shift power off peak in Ontario</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -12,7 +12,7 @@
   <header class="banner">
     <div class="banner-inner">
       <h1>TOU Saver</h1>
-      <p>See Ontario’s time-of-use windows in Toronto time, then estimate how much you save by moving laundry, dishes, or an EV charge off peak.</p>
+      <p>See Ontario's time of use price periods in Toronto time, then see what you save, and how much load you take off the busiest hours, by moving laundry, dishes or an EV charge.</p>
       <span class="pill">Built for Green Shift Hacks</span>
     </div>
   </header>
@@ -21,24 +21,22 @@
     <section class="card" aria-labelledby="now-title">
       <h2 id="now-title">Right now</h2>
       <div class="now">
-        <span id="now-badge" class="badge off" aria-live="polite">Loading…</span>
+        <span id="now-badge" class="badge off" aria-live="polite">Loading</span>
         <p id="now-meta" class="meta"></p>
       </div>
-      <fieldset style="border:0;padding:0;margin:0.85rem 0 0;">
+      <fieldset class="plans">
         <legend class="sr-only">Price plan</legend>
-        <label style="display:inline-flex;align-items:center;gap:0.35rem;margin-right:1rem;font-weight:600;color:var(--penn-blue);">
-          <input type="radio" name="plan" value="tou" checked /> Time-of-Use (TOU)
-        </label>
-        <label style="display:inline-flex;align-items:center;gap:0.35rem;font-weight:600;color:var(--penn-blue);">
-          <input type="radio" name="plan" value="ulo" /> Ultra-Low Overnight (ULO)
-        </label>
+        <label><input type="radio" name="plan" value="tou" checked /> Time of Use (TOU)</label>
+        <label><input type="radio" name="plan" value="ulo" /> Ultra-Low Overnight (ULO)</label>
       </fieldset>
       <div id="timeline" class="timeline" role="img"></div>
+      <div class="hours" aria-hidden="true"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span></div>
+      <p id="timeline-text" class="sr-only"></p>
       <div class="legend" aria-hidden="true">
-        <span><i class="swatch off"></i>Off-peak / weekend</span>
+        <span><i class="swatch ultra"></i>Ultra-low</span>
+        <span><i class="swatch off"></i>Off-peak or weekend</span>
         <span><i class="swatch mid"></i>Mid-peak</span>
         <span><i class="swatch on"></i>On-peak</span>
-        <span><i class="swatch ultra"></i>Ultra-low</span>
       </div>
       <div id="schedule-copy" class="meta"></div>
     </section>
@@ -46,54 +44,50 @@
     <div class="grid two" style="margin-top:1rem;">
       <section class="card" aria-labelledby="estimate-title">
         <h2 id="estimate-title">Shift one chore</h2>
-        <p class="meta">Pick a flexible load, how often you run it, and compare two price periods.</p>
+        <p class="meta">Pick a flexible load. Power and run time start from a published chart; change them to match your appliance label.</p>
         <div class="row two">
-          <div>
-            <label for="appliance">Appliance</label>
-            <select id="appliance"></select>
-          </div>
-          <div>
-            <label for="times">Times per week</label>
-            <input id="times" type="number" min="1" max="21" step="1" value="3" />
-          </div>
+          <div><label for="appliance">Appliance</label><select id="appliance"></select></div>
+          <div><label for="times">Runs a week</label><input id="times" type="number" min="1" max="21" step="1" value="3" /></div>
         </div>
+        <div class="row two kwh-row">
+          <div><label for="watts">Power (watts)</label><input id="watts" type="number" min="1" step="50" /></div>
+          <div><label for="hours">Hours a run</label><input id="hours" type="number" min="0.25" step="0.25" /></div>
+        </div>
+        <p id="basis" class="meta"></p>
         <div class="row two">
-          <div>
-            <label for="from-period">Run it during</label>
-            <select id="from-period"></select>
-          </div>
-          <div>
-            <label for="to-period">Shift it to</label>
-            <select id="to-period"></select>
-          </div>
+          <div><label for="from-period">Run it during</label><select id="from-period"></select></div>
+          <div><label for="to-period">Shift it to</label><select id="to-period"></select></div>
         </div>
         <div id="estimate" class="result" aria-live="polite"></div>
       </section>
 
       <section class="card" aria-labelledby="impact-title">
         <h2 id="impact-title">Why this helps the grid</h2>
-        <div id="impact"></div>
-        <h3>OEB holidays in 2026</h3>
-        <p class="meta">On these days, TOU charges the off-peak price all day. Source: OEB holiday schedule.</p>
+        <p class="impact-num" id="impact-kwh">0 kWh</p>
+        <p id="impact-text" class="meta" aria-live="polite"></p>
+        <p>On-peak hours are when Ontario uses the most power. Ontario's grid operator says natural gas plants are among the flexible generators that are called on to meet peak demand, and Save on Energy says gas plants are the single biggest source of air emissions on the Ontario grid. Every kWh moved to off-peak or overnight lowers that peak.</p>
+        <h3>OEB holidays</h3>
+        <p class="meta">On these days the lowest prices apply all day.</p>
         <ul id="holidays"></ul>
-        <div class="alert" role="note">
-          This tool uses commodity energy prices only (¢/kWh). Your bill also has delivery, regulatory charges and tax. Check your utility for the plan you are on.
-        </div>
+        <div class="alert" role="note">This tool uses the electricity price only (¢/kWh). Your bill also has delivery, regulatory charges and HST. Check which plan you are on with your utility.</div>
       </section>
     </div>
 
     <section class="card" style="margin-top:1rem;" aria-labelledby="sources-title">
-      <h2 id="sources-title">Data sources</h2>
+      <h2 id="sources-title">Sources</h2>
       <ul>
-        <li><a href="https://www.oeb.ca/consumer-information-and-protection/electricity-rates" rel="noopener noreferrer">Ontario Energy Board electricity rates</a> (TOU, ULO and Tiered prices)</li>
+        <li><a href="https://www.oeb.ca/consumer-information-and-protection/electricity-rates" rel="noopener noreferrer">Ontario Energy Board electricity rates</a>: TOU and ULO prices and periods</li>
         <li><a href="https://www.oeb.ca/consumer-information-and-protection/electricity-rates/holiday-schedule-time-use-and-ultra-low" rel="noopener noreferrer">OEB holiday schedule for TOU and ULO</a></li>
+        <li><a href="https://www.ieso.ca/Learn/Ontario-Electricity-Grid/Supply-Mix-and-Generation" rel="noopener noreferrer">IESO supply mix and generation</a>: which plants meet peak demand</li>
+        <li><a href="https://www.saveonenergy.ca/-/media/Files/SaveOnEnergy/training-and-support/energy-fundamentals/Supply-Mix-Insights-Ontarios-Energy-Landscape.pdf" rel="noopener noreferrer">Save on Energy, Supply Mix Insights</a>: gas plants as the largest source of grid air emissions</li>
+        <li><a href="https://utilitieskingston.com/web/html/Appliances" rel="noopener noreferrer">Utilities Kingston appliance usage chart</a>: appliance wattages</li>
       </ul>
       <p id="source-note" class="meta"></p>
-      <p class="meta">Appliance kWh figures are typical planning values, labelled as estimates in the calculator. They are not meter readings.</p>
     </section>
 
-    <p class="footnote">TOU Saver · MIT License · Built by John Khan for Green Shift Hacks · No tracking · Times use the <code>America/Toronto</code> zone</p>
+    <p class="footnote">TOU Saver · MIT License · Built by John Khan in Toronto, Ontario · No accounts, no tracking · <a href="https://github.com/ALENZACODES/tou-saver">Source code</a></p>
   </main>
+  <script src="logic.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

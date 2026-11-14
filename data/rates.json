@@ -3,51 +3,59 @@
     "name": "Ontario Energy Board",
     "ratesUrl": "https://www.oeb.ca/consumer-information-and-protection/electricity-rates",
     "holidayUrl": "https://www.oeb.ca/consumer-information-and-protection/electricity-rates/holiday-schedule-time-use-and-ultra-low",
-    "retrievedEt": "2026-11-05",
-    "note": "OEB sets TOU, ULO and Tiered prices once a year on November 1. Period windows swap between winter and summer; prices here are the values published for the current rate year."
+    "rateYear": "Prices set by the OEB for November 1, 2026",
+    "checked": "2026-11-14",
+    "note": "The OEB sets TOU, ULO and Tiered prices once a year on November 1. Prices are commodity cents per kWh only."
   },
   "currency": "CAD cents per kWh",
   "tou": {
     "prices": { "offPeak": 9.1, "midPeak": 14.6, "onPeak": 18.9 },
     "winter": {
-      "label": "Winter (November 1 – April 30)",
-      "offPeak": "Weekdays 7 p.m. – 7 a.m. All day on weekends and holidays.",
-      "midPeak": "Weekdays 11 a.m. – 5 p.m.",
-      "onPeak": "Weekdays 7 a.m. – 11 a.m. and 5 p.m. – 7 p.m."
+      "label": "Winter (November 1 to April 30)",
+      "offPeak": "Weekdays 7 p.m. to 7 a.m. All day on weekends and holidays.",
+      "midPeak": "Weekdays 11 a.m. to 5 p.m.",
+      "onPeak": "Weekdays 7 a.m. to 11 a.m. and 5 p.m. to 7 p.m."
     },
     "summer": {
-      "label": "Summer (May 1 – October 31)",
-      "offPeak": "Weekdays 7 p.m. – 7 a.m. All day on weekends and holidays.",
-      "midPeak": "Weekdays 7 a.m. – 11 a.m. and 5 p.m. – 7 p.m.",
-      "onPeak": "Weekdays 11 a.m. – 5 p.m."
+      "label": "Summer (May 1 to October 31)",
+      "offPeak": "Weekdays 7 p.m. to 7 a.m. All day on weekends and holidays.",
+      "midPeak": "Weekdays 7 a.m. to 11 a.m. and 5 p.m. to 7 p.m.",
+      "onPeak": "Weekdays 11 a.m. to 5 p.m."
     }
   },
   "ulo": {
     "prices": { "ultraLow": 3.7, "weekendOffPeak": 9.1, "midPeak": 14.6, "onPeak": 37.7 },
     "windows": {
-      "ultraLow": "Every day 11 p.m. – 7 a.m.",
-      "weekendOffPeak": "Weekends and holidays 7 a.m. – 11 p.m.",
-      "midPeak": "Weekdays 7 a.m. – 4 p.m. and 9 p.m. – 11 p.m.",
-      "onPeak": "Weekdays 4 p.m. – 9 p.m."
+      "ultraLow": "Every day 11 p.m. to 7 a.m.",
+      "weekendOffPeak": "Weekends and holidays 7 a.m. to 11 p.m.",
+      "midPeak": "Weekdays 7 a.m. to 4 p.m. and 9 p.m. to 11 p.m.",
+      "onPeak": "Weekdays 4 p.m. to 9 p.m."
     }
   },
-  "holidays2026": [
-    {"date": "2026-01-01", "name": "New Year's Day"},
-    {"date": "2026-02-16", "name": "Family Day"},
-    {"date": "2026-04-03", "name": "Good Friday"},
-    {"date": "2026-05-18", "name": "Victoria Day"},
-    {"date": "2026-07-01", "name": "Canada Day"},
-    {"date": "2026-08-03", "name": "Civic Holiday"},
-    {"date": "2026-09-07", "name": "Labour Day"},
-    {"date": "2026-10-12", "name": "Thanksgiving"},
-    {"date": "2026-12-25", "name": "Christmas Day"},
-    {"date": "2026-12-28", "name": "Boxing Day (observed)"}
-  ],
+  "tiered": { "tier1": 11.2, "tier2": 13.2, "note": "Residential tier threshold 1,000 kWh a month in winter, 600 kWh in summer." },
+  "holidays": {
+    "2026": [
+      {"date": "2026-01-01", "name": "New Year's Day"},
+      {"date": "2026-02-16", "name": "Family Day"},
+      {"date": "2026-04-03", "name": "Good Friday"},
+      {"date": "2026-05-18", "name": "Victoria Day"},
+      {"date": "2026-07-01", "name": "Canada Day"},
+      {"date": "2026-08-03", "name": "Civic Holiday"},
+      {"date": "2026-09-07", "name": "Labour Day"},
+      {"date": "2026-10-12", "name": "Thanksgiving Day"},
+      {"date": "2026-12-25", "name": "Christmas Day"},
+      {"date": "2026-12-28", "name": "Boxing Day (pricing day)"}
+    ]
+  },
+  "applianceSource": {
+    "name": "Utilities Kingston appliance usage chart (wattages credited to Toronto Hydro)",
+    "url": "https://utilitieskingston.com/web/html/Appliances"
+  },
   "appliances": [
-    {"id": "laundry", "label": "Laundry (washer + dryer)", "kwh": 3.5, "note": "Typical combined load for one cycle."},
-    {"id": "dishwasher", "label": "Dishwasher", "kwh": 1.5, "note": "One normal cycle."},
-    {"id": "ev", "label": "EV charge (Level 2, 2 hours)", "kwh": 15.0, "note": "Rough 7.5 kW times 2 hours. Check your charger."},
-    {"id": "dryer", "label": "Clothes dryer alone", "kwh": 2.5, "note": "One full load."},
-    {"id": "water", "label": "Electric water heater boost (1 hour)", "kwh": 4.0, "note": "Approximate; tanks vary."}
+    {"id": "dryer", "label": "Clothes dryer", "watts": 5000, "hours": 1, "basis": "5,000 W from the chart; run time is your choice."},
+    {"id": "washer", "label": "Clothes washer", "watts": 500, "hours": 1, "basis": "500 W from the chart."},
+    {"id": "dishwasher", "label": "Dishwasher", "watts": 1300, "hours": 1, "basis": "1,300 W from the chart."},
+    {"id": "ev", "label": "EV charge, Level 2", "watts": 7200, "hours": 2, "basis": "240 V times 30 A is 7.2 kW. Check your charger."},
+    {"id": "water", "label": "Electric water heater", "watts": 3500, "hours": 1, "basis": "3,500 W from the chart."}
   ]
 }

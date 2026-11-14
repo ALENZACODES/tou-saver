@@ -1,55 +1,61 @@
 # TOU Saver
 
-Shift flexible household electricity use off Ontario’s on-peak window.
+Shift flexible household electricity use out of Ontario's on-peak hours, and see what it saves.
 
-TOU Saver is a small static web app. It shows the current Time-of-Use or Ultra-Low Overnight period in America/Toronto time, draws today’s price timeline, and estimates weekly and monthly savings when you move laundry, dishes, or an EV charge to a cheaper period.
+Live: https://alenzacodes.github.io/tou-saver/
 
-Built for Green Shift Hacks (solo entry by John Khan).
+TOU Saver is a small static web app built by John Khan in Toronto, Ontario for Green Shift Hacks. It shows the current Time-of-Use (TOU) or Ultra-Low Overnight (ULO) price period in Toronto time, draws today's hour by hour price strip, and works out the weekly, monthly and yearly saving when you move a dryer, dishwasher, washer, water heater or EV charge to a cheaper period. It also shows how many kWh a year that habit takes out of the on-peak window.
 
 ## Why it exists
 
-Ontario households pay different commodity prices by time of day. Moving a dryer or charger off the on-peak window lowers the bill and eases demand when the grid is busiest. The environmental win is less strain at peak, using prices people already see on their bill.
+Ontario households already pay different prices by time of day, but the periods change between winter and summer, and ULO adds a very cheap overnight window and a very expensive late afternoon one. On-peak hours are when the grid is busiest, and Ontario's grid operator (IESO) says natural gas plants are among the flexible generators called on to meet peak demand. Moving a load is free, needs no new hardware, and the price signal tells you when.
 
 ## Features
 
-- Live “right now” badge for TOU or ULO
-- 24-hour colour timeline for today
-- Winter and summer window copy from the Ontario Energy Board
-- Appliance shift calculator with week and month estimates
-- 2026 OEB holiday list (off-peak all day on TOU)
-- Mobile-friendly layout, keyboard focus styles, skip link, ARIA live regions
-- No accounts, no tracking, no invented rates
+- Right now badge for TOU or ULO in Toronto time, refreshed every minute
+- 24 hour price strip for today, with a text version for screen readers
+- Winter and summer period wording from the Ontario Energy Board
+- Shift calculator: appliance, power in watts, hours a run, runs a week, from and to period
+- Weekly, monthly and yearly saving, plus kWh moved out of on-peak a year
+- OEB holiday list; the app says so when a year's holiday list is not in the data yet
+- Keyboard friendly, skip link, live regions, no accounts, no tracking
+
+## Data and checks
+
+| Figure | Value | Source |
+|---|---|---|
+| TOU prices, November 1, 2026 | 9.1, 14.6, 18.9 ¢/kWh | [OEB electricity rates](https://www.oeb.ca/consumer-information-and-protection/electricity-rates) |
+| ULO prices, November 1, 2026 | 3.7, 9.1, 14.6, 37.7 ¢/kWh | same page |
+| Tiered prices | 11.2 and 13.2 ¢/kWh | same page |
+| 2026 holidays | 10 pricing days, Boxing Day on Monday Dec 28 | [OEB holiday schedule](https://www.oeb.ca/consumer-information-and-protection/electricity-rates/holiday-schedule-time-use-and-ultra-low) |
+| Appliance power | dryer 5,000 W, washer 500 W, dishwasher 1,300 W, water heater 3,500 W | [Utilities Kingston appliance chart](https://utilitieskingston.com/web/html/Appliances) (credits Toronto Hydro) |
+| EV Level 2 | 7.2 kW (240 V at 30 A) | worked out from volts times amps |
+| Peak generation | gas plants among flexible peak generators | [IESO supply mix](https://www.ieso.ca/Learn/Ontario-Electricity-Grid/Supply-Mix-and-Generation) |
+
+All values were checked against those pages on November 14, 2026. Run times are user inputs, not measurements. Delivery, regulatory charges and HST are not included.
 
 ## Run locally
 
-Any static server works. From this folder:
-
-```bash
+```
 python3 -m http.server 8080
 ```
 
-Open `http://localhost:8080/`.
-
-Or open `index.html` directly in a modern browser (fetch of `data/rates.json` needs a local server in some browsers).
+Then open http://localhost:8080/.
 
 ## Tests
 
-```bash
-node tests/test_periods.mjs
+```
+for t in tests/*.mjs; do node "$t"; done
 ```
 
-Checks published prices, holiday list presence, winter/summer/holiday period logic, and that shifting off peak reduces cost.
+`tests/test_logic.mjs` loads the real `logic.js` and checks the Toronto clock, every TOU and ULO boundary in winter and summer, weekends, holidays, and the savings math. `tests/test_periods.mjs` checks the data file against the OEB wording. GitHub Actions runs both on every push.
 
-## Data sources
+## Files
 
-- [Ontario Energy Board electricity rates](https://www.oeb.ca/consumer-information-and-protection/electricity-rates) (TOU, ULO, Tiered ¢/kWh and season windows)
-- [OEB holiday schedule for TOU and ULO](https://www.oeb.ca/consumer-information-and-protection/electricity-rates/holiday-schedule-time-use-and-ultra-low) (2026 dates embedded in `data/rates.json`)
-
-Rates were retrieved 2026-11-05 America/Toronto. Appliance kWh values are labelled planning estimates, not meter readings. Delivery, regulatory charges and HST are not included.
-
-## Stack
-
-HTML, CSS and vanilla JavaScript. No build step. Penn Blue `#011F5B` and Penn Red `#990000` on white.
+- `index.html`, `styles.css`: the page
+- `logic.js`: period and savings logic, shared by the page and the tests
+- `app.js`: page wiring
+- `data/rates.json`: prices, periods, holidays and appliance defaults with sources
 
 ## License
 
