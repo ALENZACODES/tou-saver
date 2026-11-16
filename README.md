@@ -50,12 +50,26 @@ for t in tests/*.mjs; do node "$t"; done
 
 `tests/test_logic.mjs` loads the real `logic.js` and checks the Toronto clock, every TOU and ULO boundary in winter and summer, weekends, holidays, and the savings math. `tests/test_periods.mjs` checks the data file against the OEB wording. GitHub Actions runs both on every push.
 
-## Files
+## Project structure
 
-- `index.html`, `styles.css`: the page
-- `logic.js`: period and savings logic, shared by the page and the tests
-- `app.js`: page wiring
-- `data/rates.json`: prices, periods, holidays and appliance defaults with sources
+```text
+tou-saver/
+├── .github/
+│   └── workflows/        # CI workflows (1 file)
+├── data/                 # Prices, periods, holidays and appliance defaults with sources
+│   └── rates.json
+├── tests/                # Automated tests
+│   ├── test_logic.mjs
+│   └── test_periods.mjs
+├── app.js                # Page wiring
+├── DEMO-SCRIPT.md        # Demo video script
+├── DEVPOST.md            # Submission write-up
+├── index.html            # Page markup
+├── LICENSE               # Licence
+├── logic.js              # Period and savings logic, shared by the page and the tests
+├── README.md             # This file
+└── styles.css            # Styles
+```
 
 ## License
 
